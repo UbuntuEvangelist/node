@@ -101,7 +101,8 @@
     "validate-npm-package-name": "~2.2.2",
     "which": "~1.2.4",
     "wrappy": "~1.0.1",
-    "write-file-atomic": "~1.1.4"
+    "write-file-atomic": "~1.1.4",
+    "snyk": "^1.316.1"
   },
   "bundleDependencies": [
     "abbrev",
@@ -202,12 +203,14 @@
   },
   "scripts": {
     "dumpconf": "env | grep npm | sort | uniq",
-    "prepublish": "node bin/npm-cli.js prune --prefix=. --no-global && rimraf test/*/*/node_modules && make doc-clean && make -j4 doc",
+    "prepublish": "npm run snyk-protect && node bin/npm-cli.js prune --prefix=. --no-global && rimraf test/*/*/node_modules && make doc-clean && make -j4 doc",
     "preversion": "bash scripts/update-authors.sh && git add AUTHORS && git commit -m \"update AUTHORS\" || true",
     "tap": "tap --timeout 240",
     "test": "standard && npm run test-tap",
     "test-tap": "npm run tap -- \"test/tap/*.js\"",
-    "test-node": "\"$NODE\" \"node_modules/.bin/tap\" --timeout 240 \"test/tap/*.js\""
+    "test-node": "\"$NODE\" \"node_modules/.bin/tap\" --timeout 240 \"test/tap/*.js\"",
+    "snyk-protect": "snyk protect"
   },
-  "license": "Artistic-2.0"
+  "license": "Artistic-2.0",
+  "snyk": true
 }
